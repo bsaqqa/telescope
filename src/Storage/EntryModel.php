@@ -185,6 +185,18 @@ class EntryModel extends Model
     }
 
     /**
+     * Get the current connection name for the model.
+     *
+     * @return string
+     */
+    public function queries()
+    {
+        return $this
+                ->hasMany(self::class, 'batch_id', 'batch_id')
+                ->where('type', 'query');
+    }
+
+    /**
      * Create a new factory instance for the model.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory

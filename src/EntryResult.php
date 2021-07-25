@@ -61,6 +61,7 @@ class EntryResult implements JsonSerializable
      * @var array
      */
     private $tags;
+    public $queries_count;
 
     /**
      * The generated URL to the entry user's avatar.
@@ -81,7 +82,7 @@ class EntryResult implements JsonSerializable
      * @param  \Carbon\CarbonInterface|\Carbon\Carbon  $createdAt
      * @param  array  $tags
      */
-    public function __construct($id, $sequence, string $batchId, string $type, ?string $familyHash, array $content, $createdAt, $tags = [])
+    public function __construct($id, $sequence, string $batchId, string $type, ?string $familyHash, array $content, $createdAt, $tags = [], $queries_count = null)
     {
         $this->id = $id;
         $this->type = $type;
@@ -91,6 +92,7 @@ class EntryResult implements JsonSerializable
         $this->sequence = $sequence;
         $this->createdAt = $createdAt;
         $this->familyHash = $familyHash;
+        $this->queries_count = $queries_count;
     }
 
     /**
@@ -126,8 +128,14 @@ class EntryResult implements JsonSerializable
                 'content' => [
                     'user' => [
                         'avatar' => $this->avatar,
-                    ],
+                    ]
                 ],
+            ]);
+        })->when($this->queries_count !== null, function ($items) {
+            return $items->mergeRecursive([
+                'content' => [
+                    'queires' => $this->queries_count
+                ]
             ]);
         })->all();
     }
