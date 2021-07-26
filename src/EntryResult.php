@@ -61,7 +61,6 @@ class EntryResult implements JsonSerializable
      * @var array
      */
     private $tags;
-    public $queries_count;
 
     /**
      * The generated URL to the entry user's avatar.
@@ -69,6 +68,14 @@ class EntryResult implements JsonSerializable
      * @var string
      */
     protected $avatar;
+
+    /**
+     * The queries count assigned to the entry.
+     *
+     * @var array
+     */
+    protected $queries_count;
+
 
     /**
      * Create a new entry result instance.
@@ -134,7 +141,7 @@ class EntryResult implements JsonSerializable
         })->when($this->queries_count !== null, function ($items) {
             return $items->mergeRecursive([
                 'content' => [
-                    'queires' => $this->queries_count
+                    'queires_count' => $this->queries_count
                 ]
             ]);
         })->all();
