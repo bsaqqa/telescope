@@ -55,6 +55,17 @@ class EntryModel extends Model
     public $incrementing = false;
 
     /**
+     * Get the current queries for the model.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function queries()
+    {
+        return $this->hasMany(self::class, 'batch_id', 'batch_id')->where('type', 'query');
+    }
+
+
+    /**
      * Scope the query for the given query options.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -182,18 +193,6 @@ class EntryModel extends Model
     public function getConnectionName()
     {
         return config('telescope.storage.database.connection');
-    }
-
-    /**
-     * Get the current connection name for the model.
-     *
-     * @return string
-     */
-    public function queries()
-    {
-        return $this
-                ->hasMany(self::class, 'batch_id', 'batch_id')
-                ->where('type', 'query');
     }
 
     /**
